@@ -1,7 +1,7 @@
 {
-  "name": "ge.vakho.native_messaging",
-  "description": "Native Messaging Application",
-  "path": "start.bat", // The path can be relative only on Windows OS!
+  "name": "selenium.node.register",
+  "description": "Selenium-Grid Node Registration",
+  "path": "node.exe", // The path can be relative only on Windows OS!
   "type": "stdio",
   "allowed_origins": [
     "chrome-extension://knldjmfmopnpolahpmmgbagdohdnhkik/"

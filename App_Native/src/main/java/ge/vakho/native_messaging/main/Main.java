@@ -3,31 +3,57 @@ package ge.vakho.native_messaging.main;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
+import java.util.Scanner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import Models.NodeStarter;
 import ge.vakho.native_messaging.protocol.NativeRequest;
 import ge.vakho.native_messaging.protocol.NativeResponse;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-
-		// Read message
-		String requestJson = readMessage(System.in);
 		
-		ObjectMapper mapper = new ObjectMapper();
-		NativeRequest request = mapper.readValue(requestJson, NativeRequest.class);
+		while(true) {
+			
+			// Read message
+			String requestJson = readMessage(System.in);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			NativeRequest request = mapper.readValue(requestJson, NativeRequest.class);
 
-		// Process request...
-		NativeResponse response = new NativeResponse();
-		response.setMessage("Hello, " + request.getMessage() + "!");
-
-		// Send response message back
-		String responseJson = mapper.writeValueAsString(response);		
-		sendMessage(responseJson);
-
-		System.exit(0);
+			// Process request...
+			if(request.getMessage().contains("start-node")) {
+				
+				//Start Node..
+				NodeStarter.startNode();
+				
+				//Prepare respone..
+				NativeResponse response = new NativeResponse();
+				response.setMessage("Node Registered..!");
+				
+				
+				// Send response message back
+				String responseJson = mapper.writeValueAsString(response);		
+				sendMessage(responseJson);
+			}
+			else {
+				
+				//Prepare response
+				NativeResponse response2 = new NativeResponse();
+				response2.setMessage("Application Stopped..!");
+				
+				// Send response message back
+				String responseJson = mapper.writeValueAsString(response2);		
+				sendMessage(responseJson);
+				
+				//Exit Application..
+				System.exit(0);
+			}
+			
+		}
+		
 	}
 
 	private static String readMessage(InputStream in) throws IOException {
